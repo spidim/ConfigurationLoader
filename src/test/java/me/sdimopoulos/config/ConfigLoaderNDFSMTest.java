@@ -12,13 +12,13 @@ import me.sdimopoulos.config.ConfigLoader;
 
 
 /**
- * Basic unit testing of the ConfigLoader class at the top-level parsing capability
+ * Basic unit testing of the ConfigLoader class using DFSM at the top-level parsing capability
  *
- * The sample configuration file given as part of the challange is used. Then
+ * The sample configuration file is given. Then
  * all the example queries are tested.
  *
  */
-public class ConfigLoaderTest {
+public class ConfigLoaderNDFSMTest {
 
 	Config config;
 
@@ -27,7 +27,7 @@ public class ConfigLoaderTest {
 	{
 		List<String> overrides = Arrays.asList(new String[] {"deprecated", "production"});
 		ConfigLoader configLoader = new ConfigLoader();
-		config = configLoader.loadConfig("src/test/resources/server.conf", overrides);
+		config = configLoader.loadConfigRegEx("src/test/resources/server.conf", overrides);
 	}
 	@Test
 	public void testCompletedExecution() {

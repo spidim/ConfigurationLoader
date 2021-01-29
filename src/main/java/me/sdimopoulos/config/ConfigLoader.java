@@ -13,6 +13,7 @@ import me.sdimopoulos.config.parser.Parser;
 import me.sdimopoulos.config.parser.ParserBuilder;
 import me.sdimopoulos.config.parser.ParsingConfigurationException;
 import me.sdimopoulos.config.parser.ParsingContext;
+import me.sdimopoulos.config.parser.RegExBuilder;
 /**
  * The Configuration Loader, contains the loadConfig method
  * 
@@ -100,6 +101,37 @@ public class ConfigLoader {
 				updateConfig(parsingCtx);
 				parsingCtx.resetParsedVariables();
 				fsmParser.resetParser();
+			}
+			System.out.print("\n");
+		}
+		catch(ParsingConfigurationException|IOException e)
+		{
+			throw new RuntimeException(e.getMessage());
+		}
+		return config;
+	}
+	
+	public Config loadConfigRegEx(String filePath, List<String> overrides)
+			throws RuntimeException
+	{
+		Config config = new Config();
+		try(BufferedReader buffReader = 
+				Files.newBufferedReader(Paths.get(filePath))) {
+			System.out.print("\n");
+			ParsingContext parsingCtx = new ParsingContext(config, overrides);
+			parsingCtx.setupParsedVariables(new String [] {"group","setting",
+					"override","value"});
+			RegExBuilder regexBuilder = new RegExBuilder();
+			ParserBuilder parserBuilder = new ParserBuilder();
+			Parser regexParser = parserBuilder.buildParserWithRegEx(regexBuilder.buildRegEx());
+			for(String line=buffReader.readLine();
+					line!=null&&!line.isEmpty();
+					line=buffReader.readLine())
+			{
+				regexParser.parseSingleLineAndUpdateContext(line, parsingCtx);
+				updateConfig(parsingCtx);
+				parsingCtx.resetParsedVariables();
+				regexParser.resetParser();
 			}
 			System.out.print("\n");
 		}

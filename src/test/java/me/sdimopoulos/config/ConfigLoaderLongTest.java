@@ -94,7 +94,7 @@ public class ConfigLoaderLongTest {
 	}
 
 	@Test
-	public void testLoadingTimeExecution() {
+	public void testLoadingTimeExecutionDFSM() {
 		List<String> overrides = Arrays.asList(new String[] {"test", "staging"});
 		ConfigLoader configLoader = new ConfigLoader();
 		int iterations = 10;
@@ -107,12 +107,30 @@ public class ConfigLoaderLongTest {
 			Assert.assertNotNull(config);
 			totalTime += estimatedTime;
 		}
-		System.out.println(String.format("Long test average configuration loading time was %.6f millies",
+		System.out.println(String.format("DFSM: Long test average configuration loading time was %.6f millies",
 				totalTime/10e6/iterations));
 	}
 	
 	@Test
-	public void testQueryTimeExecution() {
+	public void testLoadingTimeExecutionNDFSM() {
+		List<String> overrides = Arrays.asList(new String[] {"test", "staging"});
+		ConfigLoader configLoader = new ConfigLoader();
+		int iterations = 10;
+		long totalTime = 0;
+		for (int i = 0 ; i < iterations ; i++)
+		{
+			long startTime = System.nanoTime();
+			config = configLoader.loadConfigRegEx(settingsHugeFilename, overrides);
+			long estimatedTime = System.nanoTime() - startTime;
+			Assert.assertNotNull(config);
+			totalTime += estimatedTime;
+		}
+		System.out.println(String.format("NDFSM(RegEx): Long test average configuration loading time was %.6f millies",
+				totalTime/10e6/iterations));
+	}
+	
+	@Test
+	public void testQueryTimeExecutionDFSM() {
 		List<String> overrides = Arrays.asList(new String[] {"test", "staging"});
 		ConfigLoader configLoader = new ConfigLoader();
 		config = configLoader.loadConfig(settingsHugeFilename, overrides);
@@ -133,7 +151,33 @@ public class ConfigLoaderLongTest {
 			
 			totalTime += estimatedTime;
 		}
-		System.out.println(String.format("Long test average query time (N=%d) was %.6f millies",
+		System.out.println(String.format("DFSM: Long test average query time (N=%d) was %.6f millies",
+				iterations*4, totalTime/10e6/iterations*4));
+	}
+	
+	@Test
+	public void testQueryTimeExecutionNDFSM() {
+		List<String> overrides = Arrays.asList(new String[] {"test", "staging"});
+		ConfigLoader configLoader = new ConfigLoader();
+		config = configLoader.loadConfigRegEx(settingsHugeFilename, overrides);
+		Assert.assertNotNull(config);
+		int iterations = 25000;
+		long totalTime = 0;
+		for (int i = 0 ; i < iterations ; i++)
+		{
+			String key1 = faker.letterify("section??");
+			String key2 = faker.letterify("?????????");
+			String key3 = faker.letterify("??????????????");
+			long startTime = System.nanoTime();
+			config.get(key1).get("query_meA");
+			config.get(key1).get("query_meB");
+			config.get(key1).get(key2);
+			config.get(key1).get(key3);
+			long estimatedTime = System.nanoTime() - startTime;
+			
+			totalTime += estimatedTime;
+		}
+		System.out.println(String.format("NDFSM(RegEx): Long test average query time (N=%d) was %.6f millies",
 				iterations*4, totalTime/10e6/iterations*4));
 	}
 	
