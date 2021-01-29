@@ -1,5 +1,7 @@
 package me.sdimopoulos.config.parser;
 
+import me.sdimopoulos.config.parser.Parser.ParseType;
+import me.sdimopoulos.config.parser.Parser.ParseVariable;
 
 /**
  * Builder for the FSM used to parse the configuration settings file
@@ -26,7 +28,7 @@ public class FsmBuilder {
 	 * to keep the whole structure in memory and this is passed to FsmState. 
 	 * A 13 state FSM is used to parse all possible input lines and extract
 	 * information about groups, setting names, setting values and overrides.
-	 * The FsmState is returned and can be used by the {@link Parser}
+	 * The FsmState is returned and can be used by the {@link FsmParser}
 	 * 
 	 * 
 	 * @return FsmState object which can be used for parsing input

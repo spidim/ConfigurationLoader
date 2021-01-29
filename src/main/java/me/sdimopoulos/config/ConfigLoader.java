@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import me.sdimopoulos.config.parser.FsmBuilder;
+import me.sdimopoulos.config.parser.FsmParser;
 import me.sdimopoulos.config.parser.Parser;
 import me.sdimopoulos.config.parser.ParserBuilder;
 import me.sdimopoulos.config.parser.ParsingConfigurationException;
@@ -65,8 +66,8 @@ public class ConfigLoader {
 	 * the suitable settings in case there are many available.
 	 * A {@link ParsingContext} is used to have available the configuration
 	 * object and the list of overrides given as input throughout the process.
-	 * A {@link Parser} object is used to do the line by line parsing of input.
-	 * {@link ParserBuilder} is the builder of Parser objects.
+	 * A {@link FsmParser} object is used to do the line by line parsing of input.
+	 * {@link ParserBuilder} is the builder of FsmParser objects.
 	 * Parsing logic is based on a Deterministic FSM. The state of the FSM is 
 	 * saved and updated in {@link FsmState}. {@link FsmBuilder} generates the
 	 * FSM object with a structure that can parse the files in question.
@@ -89,16 +90,16 @@ public class ConfigLoader {
 					"override","value"});
 			FsmBuilder fsmBuilder = new FsmBuilder();
 			ParserBuilder parserBuilder = new ParserBuilder();
-			Parser parser = parserBuilder.buildParserWithFSM(
+			Parser fsmParser = parserBuilder.buildParserWithFSM(
 												fsmBuilder.buildFSM());
 			for(String line=buffReader.readLine();
 					line!=null&&!line.isEmpty();
 					line=buffReader.readLine())
 			{
-				parser.parseSingleLineAndUpdateContext(line, parsingCtx);
+				fsmParser.parseSingleLineAndUpdateContext(line, parsingCtx);
 				updateConfig(parsingCtx);
 				parsingCtx.resetParsedVariables();
-				parser.resetParser();
+				fsmParser.resetParser();
 			}
 			System.out.print("\n");
 		}

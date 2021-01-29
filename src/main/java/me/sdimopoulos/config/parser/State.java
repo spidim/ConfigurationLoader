@@ -17,8 +17,8 @@ import java.util.List;
 public class State {
 	public int Id;
 	private List<Transition> transitions;
-	private ParseVariable parsedVariable;
-	private ParseType parsedType;
+	private Parser.ParseVariable parsedVariable;
+	private Parser.ParseType parsedType;
 	private boolean isFinal;
 
 	
@@ -33,8 +33,8 @@ public class State {
 	{
 		Id = id;
 		transitions = new ArrayList<>();
-		parsedVariable = ParseVariable.NA;
-		parsedType = ParseType.NA;
+		parsedVariable = Parser.ParseVariable.NA;
+		parsedType = Parser.ParseType.NA;
 		isFinal = false;
 	}
 
@@ -99,20 +99,20 @@ public class State {
 	}
 
 	/* Getters and Setters begin here */
-	public ParseVariable getParsedVariable() {
+	public Parser.ParseVariable getParsedVariable() {
 		return parsedVariable;
 	}
 
-	public State setParsedVariable(ParseVariable parsedVariable) {
+	public State setParsedVariable(Parser.ParseVariable parsedVariable) {
 		this.parsedVariable = parsedVariable;
 		return this;
 	}
 
-	public ParseType getParsedType() {
+	public Parser.ParseType getParsedType() {
 		return parsedType;
 	}
 
-	public State setParsedType(ParseType parsedType) {
+	public State setParsedType(Parser.ParseType parsedType) {
 		this.parsedType = parsedType;
 		return this;
 	}
