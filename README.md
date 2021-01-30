@@ -16,9 +16,9 @@ performance was not degraded as you can see from the performance results.
 1. The parsing algorithm uses a Deterministic Finite State Machine to decide
 about the acceptance of the input and where to extract the variables from. It
 works very fast because there is no backtracking. It can be easily generalized 
-in order to parse other templates of input files. I must note here that a first
-attempt to parse the lines using Regular Expressions was quickly abandoned due
-to inefficiency.
+in order to parse other templates of input files. There is also a RegEx based
+non-deterministic FSM parser that works at around 20-25% the performance of
+the Deterministic FSM one.
 
 1. Builder-like patterns are used to construct the Parser and FSM objects, but
 no further generalization of the concepts of parsing and underlying algorithm was
@@ -28,9 +28,7 @@ made due to lack of time (Interfaces etc.)
 and exits with an exception.
 
 1. The FSM used to parse all possible combinations of the input file, needed
-13 states. A figure would be very handy here, but I have only one in a paper written
-with pencil. An ASCII version of the figure in this README was envisioned, but
-no time was found.
+13 states. You can find the graph in the article ...
 
 # How to compile
 The solution is provided as a Maven project. It requires Java 1.8+ and it has
@@ -66,7 +64,3 @@ You can run the tests using the following command:
 # Future TODO
 * Add logging. Curently there are some standard output prints mainly kept for demonstration.
 
-* Add interfaces for the Parser and the Parsing Algorithm (FSM). This will
-generalize the parsing and make it more easy to add other file formats and 
-parsing algorithms.
- 
